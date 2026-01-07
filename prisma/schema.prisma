@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model ScooterModel {
+  id         Int      @id @default(autoincrement())
+  name       String
+  slug       String   @unique
+  description String?
+  price      Float
+  stock      Int      @default(0)
+  salesCount Int      @default(0)
+  imageUrl   String?
+  isFeatured Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model ServiceBooking {
+  id            Int      @id @default(autoincrement())
+  name          String
+  phone         String
+  email         String?
+  vehicleSlug   String?     // store slug
+  preferredDate DateTime?
+  comments      String?
+  createdAt     DateTime @default(now())
+}
+
+model SubDealerLead {
+  id          Int      @id @default(autoincrement())
+  name        String
+  company     String?
+  email       String
+  phone       String
+  city        String?
+  message     String?
+  isProcessed Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
