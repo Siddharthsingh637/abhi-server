@@ -1,19 +1,39 @@
 import prisma from "../prismaClient.js";
+import { sendServiceBookingMail } from "../utils/serviceMailer.js";
 
 export const createServiceBooking = async (req, res, next) => {
   try {
-    const { preferredDate, ...rest } = req.body;
+    const { preferredDate, vehicleModel, ...rest } = req.body;
 
     const data = {
       ...rest,
+      vehicleSlug: vehicleModel,
       preferredDate: preferredDate ? new Date(preferredDate) : null,
     };
 
     const booking = await prisma.serviceBooking.create({ data });
-    res.status(201).json({ success: true, booking });
+
+    // respond immediately
+    res.status(201).json({
+      success: true,
+      message: "Service appointment booked",
+      booking,
+    });
+
+    // send mail in background
+    sendServiceBookingMail({
+      name: booking.name,
+      phone: booking.phone,
+      email: booking.email,
+      vehicleModel: booking.vehicleSlug,
+      serviceType: booking.serviceType,
+      preferredDate: booking.preferredDate,
+      comments: booking.comments,
+    }).catch(err => {
+      console.error("Service mail error:", err);
+    });
 
   } catch (err) {
     next(err);
   }
 };
-

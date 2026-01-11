@@ -25,11 +25,13 @@ model ServiceBooking {
   name          String
   phone         String
   email         String?
-  vehicleSlug   String?     // store slug
+  vehicleSlug   String?
+  serviceType   String?
   preferredDate DateTime?
   comments      String?
   createdAt     DateTime @default(now())
 }
+
 
 model SubDealerLead {
   id          Int      @id @default(autoincrement())

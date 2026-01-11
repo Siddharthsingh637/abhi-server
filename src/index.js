@@ -28,9 +28,3 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Backend listening on ${PORT}`));
-
-console.log("ENV CHECK:", {
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
-  user: process.env.EMAIL_USER,
-});
