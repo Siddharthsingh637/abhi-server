@@ -5,6 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "postinstall": "prisma generate && prisma migrate deploy",
     "start": "node src/index.js"
   },
   "keywords": [],
