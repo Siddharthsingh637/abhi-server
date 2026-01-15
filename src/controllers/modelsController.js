@@ -1,4 +1,5 @@
-import prisma from "../prismaClient.js";
+// import prisma from "../prismaClient.js";
+import prisma from "../lib/prisma.js";
 
 export const listModels = async (req, res, next) => {
   try {

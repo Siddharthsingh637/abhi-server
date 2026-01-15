@@ -1,4 +1,5 @@
-import prisma from "../prismaClient.js";
+// import prisma from "../prismaClient.js";
+import prisma from "../lib/prisma.js";
 import { sendServiceBookingMail } from "../utils/serviceMailer.js";
 
 export const createServiceBooking = async (req, res, next) => {

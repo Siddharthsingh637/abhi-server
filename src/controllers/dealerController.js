@@ -1,4 +1,5 @@
-import prisma from "../prismaClient.js";
+// import prisma from "../prismaClient.js";
+import prisma from "../lib/prisma.js";
 
 export const createDealer = async (req, res, next) => {
   try {
