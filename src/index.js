@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-
+import prisma from "./lib/prisma.js";               // <-- ADD THIS
 import modelsRouter from "./routes/models.js";
 import serviceRouter from "./routes/service.js";
 import dealerRouter from "./routes/dealer.js";
@@ -9,6 +9,16 @@ import enquiryRouter from "./routes/enquiry.js";
 import errorHandler from "./middleware/errorHandler.js";
 
 dotenv.config();
+
+(async () => {
+  try {
+    console.log("Testing Prisma DB connection...");
+    await prisma.$connect();
+    console.log("DB Connected Successfully!");
+  } catch (err) {
+    console.error("DB ERROR:", err);
+  }
+})();
 
 const app = express();
 
