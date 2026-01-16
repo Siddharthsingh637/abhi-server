@@ -12,14 +12,18 @@ export const createServiceBooking = async (req, res, next) => {
       preferredDate: preferredDate ? new Date(preferredDate) : null,
     };
 
-    const booking = await prisma.serviceBooking.create({ data });
+    console.log({data})
 
+    const booking = await prisma.serviceBooking.create({ data });
+    console.log(data);
     // respond immediately
     res.status(201).json({
       success: true,
       message: "Service appointment booked",
       booking,
     });
+
+    console.log(booking);
 
     // send mail in background
     sendServiceBookingMail({
