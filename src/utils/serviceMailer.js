@@ -1,17 +1,28 @@
 import nodemailer from "nodemailer";
 
+console.log("ENV data :- ")
+console.log(process.env.HOST)
+console.log(process.env.EMAIL_PORT)
+console.log(process.env.EMAIL_PASS)
+console.log(process.env.EMAIL_USER)
+
+
+
+
+
 const transporter = nodemailer.createTransport({
   host: process.env.HOST || "smtp.hostinger.com",
   port: Number(process.env.EMAIL_PORT) || 465,
   secure: Number(process.env.EMAIL_PORT) === 465,
-  pool: true,               // ⭐ IMPORTANT (speed)
-  maxConnections: 1,
+  // pool: true,               // ⭐ IMPORTANT (speed)
+  // maxConnections: 1,
   maxMessages: 10,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
 });
+
 
 export const sendServiceBookingMail = async ({
   name,
