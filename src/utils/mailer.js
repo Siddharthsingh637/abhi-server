@@ -1,24 +1,17 @@
-import nodemailer from "nodemailer";
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
-const transporter = nodemailer.createTransport({
-  host: process.env.HOST,
-  port: Number(process.env.EMAIL_PORT) || 465,
-  secure: Number(process.env.EMAIL_PORT) === 465,
-  pool: true,               // ⭐ IMPORTANT (speed)
-  maxConnections: 1,
-  maxMessages: 10,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+const sesClient = new SESClient({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
 });
 
+const fromEmail = process.env.SES_FROM_EMAIL || "support@abhilashit.in";
+
 export async function sendEnquiryMail({ name, phone, email, city, message }) {
-  await transporter.sendMail({
-  from: `"Abhilashit Enquiry" <support@abhilashit.in>`,
-  to: "support@abhilashit.in",
-  subject: "🚨 New Website Enquiry Received",
-  html: `
+  const htmlContent = `
   <div style="max-width:600px;margin:auto;font-family:Arial,Helvetica,sans-serif;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
     
     <div style="background:#0f766e;padding:20px;">
@@ -61,14 +54,38 @@ export async function sendEnquiryMail({ name, phone, email, city, message }) {
     </div>
 
   </div>
-  `,
-});
+  `;
 
-  await transporter.sendMail({
-  from: `"Abhilashit Automobiles" <support@abhilashit.in>`,
-  to: email,
-  subject: "✅ We’ve received your enquiry",
-  html: `
+  // Send email to support
+  const supportEmailParams = {
+    Source: `Abhilashit Enquiry <${fromEmail}>`,
+    Destination: {
+      ToAddresses: ["support@abhilashit.in"],
+    },
+    Message: {
+      Subject: {
+        Data: "🚨 New Website Enquiry Received",
+        Charset: "UTF-8",
+      },
+      Body: {
+        Html: {
+          Data: htmlContent,
+          Charset: "UTF-8",
+        },
+      },
+    },
+  };
+
+  try {
+    await sesClient.send(new SendEmailCommand(supportEmailParams));
+  } catch (error) {
+    console.error("Error sending support email:", error);
+    throw error;
+  }
+
+  // Send confirmation email to customer
+  if (email) {
+    const customerHtmlContent = `
   <div style="max-width:600px;margin:auto;font-family:Arial,Helvetica,sans-serif;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
 
     <div style="background:#0f766e;padding:22px;text-align:center;">
@@ -82,7 +99,7 @@ export async function sendEnquiryMail({ name, phone, email, city, message }) {
 
       <p>
         Thank you for contacting <strong>Abhilashit Automobiles</strong>.
-        We’ve received your enquiry and our team will get in touch with you shortly.
+        We've received your enquiry and our team will get in touch with you shortly.
       </p>
 
       <div style="margin:20px 0;padding:16px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;">
@@ -107,7 +124,32 @@ export async function sendEnquiryMail({ name, phone, email, city, message }) {
     </div>
 
   </div>
-  `,
-});
-}
+  `;
 
+    const customerEmailParams = {
+      Source: `Abhilashit Automobiles <${fromEmail}>`,
+      Destination: {
+        ToAddresses: [email],
+      },
+      Message: {
+        Subject: {
+          Data: "✅ We've received your enquiry",
+          Charset: "UTF-8",
+        },
+        Body: {
+          Html: {
+            Data: customerHtmlContent,
+            Charset: "UTF-8",
+          },
+        },
+      },
+    };
+
+    try {
+      await sesClient.send(new SendEmailCommand(customerEmailParams));
+    } catch (error) {
+      console.error("Error sending customer confirmation email:", error);
+      throw error;
+    }
+  }
+}

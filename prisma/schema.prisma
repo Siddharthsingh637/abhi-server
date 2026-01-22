@@ -41,6 +41,7 @@ model SubDealerLead {
   phone       String
   city        String?
   message     String?
+  experience    String?
   isProcessed Boolean  @default(false)
   createdAt   DateTime @default(now())
 }
