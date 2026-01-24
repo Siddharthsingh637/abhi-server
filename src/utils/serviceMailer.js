@@ -91,74 +91,75 @@ export const sendServiceBookingMail = async ({
   }
 
   // Send auto-reply to customer if email is provided
-  // if (email) {
-  //   const customerHtmlContent = `
-  //     <div style="max-width:600px;margin:auto;font-family:Arial,sans-serif;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
+
+  if (email) {
+    const customerHtmlContent = `
+      <div style="max-width:600px;margin:auto;font-family:Arial,sans-serif;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
         
-  //       <div style="background:#0f766e;padding:20px;">
-  //         <h2 style="color:#fff;margin:0;">Service Booking Confirmed</h2>
-  //         <p style="color:#ccfbf1;margin-top:6px;font-size:13px;">
-  //           Thank you for choosing Abhilashit Automobiles
-  //         </p>
-  //       </div>
+        <div style="background:#0f766e;padding:20px;">
+          <h2 style="color:#fff;margin:0;">Service Booking Confirmed</h2>
+          <p style="color:#ccfbf1;margin-top:6px;font-size:13px;">
+            Thank you for choosing Abhilashit Automobiles
+          </p>
+        </div>
 
-  //       <div style="padding:24px;font-size:14px;color:#111827;">
-  //         <p>Dear ${name},</p>
-  //         <p>We have received your service booking request. Our team will contact you shortly to confirm the appointment details.</p>
+        <div style="padding:24px;font-size:14px;color:#111827;">
+          <p>Dear ${name},</p>
+          <p>We have received your service booking request. Our team will contact you shortly to confirm the appointment details.</p>
           
-  //         <table width="100%" cellpadding="6" style="margin-top:16px;">
-  //           <tr><td><b>Name</b></td><td>${name}</td></tr>
-  //           <tr><td><b>Phone</b></td><td>${phone}</td></tr>
-  //           <tr><td><b>Email</b></td><td>${email}</td></tr>
-  //           <tr><td><b>Vehicle</b></td><td>${vehicleModel || "N/A"}</td></tr>
-  //           <tr><td><b>Service Type</b></td><td>${serviceType || "N/A"}</td></tr>
-  //           <tr><td><b>Preferred Date</b></td><td>${formattedDate}</td></tr>
-  //         </table>
+          <table width="100%" cellpadding="6" style="margin-top:16px;">
+            <tr><td><b>Name</b></td><td>${name}</td></tr>
+            <tr><td><b>Phone</b></td><td>${phone}</td></tr>
+            <tr><td><b>Email</b></td><td>${email}</td></tr>
+            <tr><td><b>Vehicle</b></td><td>${vehicleModel || "N/A"}</td></tr>
+            <tr><td><b>Service Type</b></td><td>${serviceType || "N/A"}</td></tr>
+            <tr><td><b>Preferred Date</b></td><td>${formattedDate}</td></tr>
+          </table>
 
-  //         <div style="margin-top:16px;">
-  //           <p><b>Your Comments</b></p>
-  //           <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;">
-  //             ${comments || "No additional comments"}
-  //           </div>
-  //         </div>
+          <div style="margin-top:16px;">
+            <p><b>Your Comments</b></p>
+            <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;">
+              ${comments || "No additional comments"}
+            </div>
+          </div>
 
-  //         <p style="margin-top:16px;">If you have any questions, please contact us at support@abhilashit.in or call us directly.</p>
-  //         <p>Best regards,<br>Abhilashit Automobiles Team</p>
-  //       </div>
+          <p style="margin-top:16px;">If you have any questions, please contact us at support@abhilashit.in or call us directly.</p>
+          <p>Best regards,<br>Abhilashit Automobiles Team</p>
+        </div>
 
-  //       <div style="background:#f1f5f9;padding:12px;text-align:center;font-size:12px;color:#64748b;">
-  //         Abhilashit Automobiles – Your Trusted Service Partner
-  //       </div>
+        <div style="background:#f1f5f9;padding:12px;text-align:center;font-size:12px;color:#64748b;">
+          Abhilashit Automobiles – Your Trusted Service Partner
+        </div>
 
-  //     </div>
-  //     `;
+      </div>
+      `;
 
-  //   const customerEmailParams = {
-  //     Source: `Abhilashit Automobiles <${fromEmail}>`,
-  //     Destination: {
-  //       ToAddresses: [email],
-  //     },
-  //     Message: {
-  //       Subject: {
-  //         Data: "✅ Service Booking Confirmation",
-  //         Charset: "UTF-8",
-  //       },
-  //       Body: {
-  //         Html: {
-  //           Data: customerHtmlContent,
-  //           Charset: "UTF-8",
-  //         },
-  //       },
-  //     },
-  //   };
+    const customerEmailParams = {
+      Source: `Abhilashit Automobiles <${fromEmail}>`,
+      Destination: {
+        ToAddresses: [email],
+      },
+      Message: {
+        Subject: {
+          Data: "✅ Service Booking Confirmation",
+          Charset: "UTF-8",
+        },
+        Body: {
+          Html: {
+            Data: customerHtmlContent,
+            Charset: "UTF-8",
+          },
+        },
+      },
+    };
 
-  //   try {
-  //     await sesClient.send(new SendEmailCommand(customerEmailParams));
-  //   } catch (error) {
-  //     console.error("Error sending customer confirmation email:", error);
-  //     throw error;
-  //   }
-  // }
+    try {
+      await sesClient.send(new SendEmailCommand(customerEmailParams));
+    } catch (error) {
+      console.error("Error sending customer confirmation email:", error);
+      throw error;
+    }
+  }
 
   return supportMail;
 };
@@ -237,69 +238,69 @@ export const sendSubDealerMail = async ({
   }
 
   // Send auto-reply to applicant if email is provided
-  // if (email) {
-  //   const customerHtmlContent = `
-  //     <div style="max-width:600px;margin:auto;font-family:Arial,sans-serif;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
+  if (email) {
+    const customerHtmlContent = `
+      <div style="max-width:600px;margin:auto;font-family:Arial,sans-serif;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
         
-  //       <div style="background:#0f766e;padding:20px;">
-  //         <h2 style="color:#fff;margin:0;">Thank You for Your Interest</h2>
-  //         <p style="color:#ccfbf1;margin-top:6px;font-size:13px;">
-  //           Sub Dealer Partnership Application
-  //         </p>
-  //       </div>
+        <div style="background:#0f766e;padding:20px;">
+          <h2 style="color:#fff;margin:0;">Thank You for Your Interest</h2>
+          <p style="color:#ccfbf1;margin-top:6px;font-size:13px;">
+            Sub Dealer Partnership Application
+          </p>
+        </div>
 
-  //       <div style="padding:24px;font-size:14px;color:#111827;">
-  //         <p>Dear ${name},</p>
-  //         <p>Thank you for your interest in becoming a sub-dealer partner with Abhilashit Automobiles. We have received your application and appreciate your enthusiasm.</p>
+        <div style="padding:24px;font-size:14px;color:#111827;">
+          <p>Dear ${name},</p>
+          <p>Thank you for your interest in becoming a sub-dealer partner with Abhilashit Automobiles. We have received your application and appreciate your enthusiasm.</p>
           
-  //         <p>Our partnership team will review your application and contact you within 2-3 business days with next steps and opportunities.</p>
+          <p>Our partnership team will review your application and contact you within 2-3 business days with next steps and opportunities.</p>
 
-  //         <div style="margin-top:16px;padding:12px;background:#f0f9ff;border-left:4px solid #0f766e;">
-  //           <p style="margin:0;font-weight:bold;">Your Application Details:</p>
-  //           <p style="margin:8px 0 0;font-size:13px;">📞 Phone: ${phone}</p>
-  //           ${city ? `<p style="margin:8px 0 0;font-size:13px;">📍 City: ${city}</p>` : ""}
-  //           ${businessName ? `<p style="margin:8px 0 0;font-size:13px;">🏪 Business Name: ${businessName}</p>` : ""}
-  //           ${company ? `<p style="margin:8px 0 0;font-size:13px;">🏢 Company: ${company}</p>` : ""}
-  //           ${experience ? `<p style="margin:8px 0 0;font-size:13px;">💼 Experience: ${experience}</p>` : ""}
-  //         </div>
+          <div style="margin-top:16px;padding:12px;background:#f0f9ff;border-left:4px solid #0f766e;">
+            <p style="margin:0;font-weight:bold;">Your Application Details:</p>
+            <p style="margin:8px 0 0;font-size:13px;">📞 Phone: ${phone}</p>
+            ${city ? `<p style="margin:8px 0 0;font-size:13px;">📍 City: ${city}</p>` : ""}
+            ${businessName ? `<p style="margin:8px 0 0;font-size:13px;">🏪 Business Name: ${businessName}</p>` : ""}
+            ${company ? `<p style="margin:8px 0 0;font-size:13px;">🏢 Company: ${company}</p>` : ""}
+            ${experience ? `<p style="margin:8px 0 0;font-size:13px;">💼 Experience: ${experience}</p>` : ""}
+          </div>
 
-  //         <p style="margin-top:16px;">If you have any questions in the meantime, feel free to reach out to us at support@abhilashit.in.</p>
-  //         <p>Best regards,<br><strong>Abhilashit Automobiles</strong><br>Partnership Development Team</p>
-  //       </div>
+          <p style="margin-top:16px;">If you have any questions in the meantime, feel free to reach out to us at support@abhilashit.in.</p>
+          <p>Best regards,<br><strong>Abhilashit Automobiles</strong><br>Partnership Development Team</p>
+        </div>
 
-  //       <div style="background:#f1f5f9;padding:12px;text-align:center;font-size:12px;color:#64748b;">
-  //         Abhilashit Automobiles – Premium Electric Mobility
-  //       </div>
+        <div style="background:#f1f5f9;padding:12px;text-align:center;font-size:12px;color:#64748b;">
+          Abhilashit Automobiles – Premium Electric Mobility
+        </div>
 
-  //     </div>
-  //     `;
+      </div>
+      `;
 
-  //   const customerEmailParams = {
-  //     Source: `Abhilashit Automobiles <${fromEmail}>`,
-  //     Destination: {
-  //       ToAddresses: [email],
-  //     },
-  //     Message: {
-  //       Subject: {
-  //         Data: "✅ Sub Dealer Application Received",
-  //         Charset: "UTF-8",
-  //       },
-  //       Body: {
-  //         Html: {
-  //           Data: customerHtmlContent,
-  //           Charset: "UTF-8",
-  //         },
-  //       },
-  //     },
-  //   };
+    const customerEmailParams = {
+      Source: `Abhilashit Automobiles <${fromEmail}>`,
+      Destination: {
+        ToAddresses: [email],
+      },
+      Message: {
+        Subject: {
+          Data: "✅ Sub Dealer Application Received",
+          Charset: "UTF-8",
+        },
+        Body: {
+          Html: {
+            Data: customerHtmlContent,
+            Charset: "UTF-8",
+          },
+        },
+      },
+    };
 
-  //   try {
-  //     await sesClient.send(new SendEmailCommand(customerEmailParams));
-  //   } catch (error) {
-  //     console.error("Error sending customer confirmation email:", error);
-  //     throw error;
-  //   }
-  // }
+    try {
+      await sesClient.send(new SendEmailCommand(customerEmailParams));
+    } catch (error) {
+      console.error("Error sending customer confirmation email:", error);
+      throw error;
+    }
+  }
 
   return supportMail;
 };
