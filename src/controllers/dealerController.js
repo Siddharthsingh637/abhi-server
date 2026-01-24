@@ -1,5 +1,5 @@
 import prisma from "../lib/prisma.js";
-import { sendSubDealerMail } from "../utils/serviceMailer.js";
+import {sendSubDealerMail} from "../utils/subdealerMailer.js";
 
 export const createDealer = async (req, res, next) => {
   try {
